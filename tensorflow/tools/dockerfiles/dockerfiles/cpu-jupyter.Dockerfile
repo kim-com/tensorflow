@@ -26,7 +26,6 @@ FROM ubuntu:${UBUNTU_VERSION} as base
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y curl
-
 # See http://bugs.python.org/issue19846
 ENV LANG C.UTF-8
 
@@ -74,8 +73,12 @@ RUN wget https://raw.githubusercontent.com/tensorflow/docs/master/site/en/tutori
 COPY readme-for-jupyter.md README.md
 RUN apt-get autoremove -y && apt-get remove -y wget
 WORKDIR /tf
-EXPOSE 8888
+
+#Offilcial Makefile
+#EXPOSE 8888
+#KHJ change from port:8888 to port:4025
+EXPOSE 4025
 
 RUN python3 -m ipykernel.kernelspec
 
-CMD ["bash", "-c", "source /etc/bash.bashrc && jupyter notebook --notebook-dir=/tf --ip 0.0.0.0 --no-browser --allow-root"]
+CMD ["bash", "-c", "source /etc/bash.bashrc && jupyter notebook --notebook-dir=/tf --ip 0.0.0.0 --port=4025 --no-browser --allow-root"]
